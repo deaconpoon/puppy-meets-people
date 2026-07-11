@@ -74,23 +74,94 @@ Everything past step 4 (chat, scheduling a dog-park date) is faked with a static
 
 **Won't have (this weekend):** auth, real chat, payments, notifications, real DB, native app.
 
-### 2.4 User stories (Must-haves, with acceptance criteria)
+### 2.4 User stories
 
-**US-1 — Build a combined profile**
-> As a single dog owner, I want to create a profile for me *and* my dog, so that matches consider both of us.
-- *Given* I open the profile form, *when* I fill human fields (name, age, city, lifestyle/energy, interests, what I want) and dog fields (dog name, breed, size, energy, temperament, favorite activity), *then* my profile is saved to app state and used for matching.
+**How to read these.** Each story defines a *user need and outcome*, not an implementation. Acceptance criteria describe what the user should be able to experience or trust — deliberately **solution-agnostic**. The vertical-slice owner decides the *how* (screens, fields, scoring format, interactions). If an AC starts to name a screen, a button, or a number format, it has drifted into solution territory and should be re-generalized.
 
-**US-2 — See ranked matches with combined score**
-> As a single dog owner, I want to see candidates ranked by combined human + dog compatibility, so that I find dates whose dogs also fit mine.
-- *Given* my profile exists, *when* I open Discover, *then* I see candidates sorted high-to-low by a combined score (0–100), each showing human sub-score and dog sub-score.
+Priority uses MoSCoW (see §2.3). **Must-haves (US-1–US-4)** are the weekend build and map to the three vertical slices. The rest scope the fuller product and inform stretch work / the pitch's "what's next."
 
-**US-3 — Understand *why* we matched (the AI moment)**
-> As a single dog owner, I want to see why a match was made, so that I trust it.
-- *Given* a candidate in Discover, *when* it renders, *then* I see a 1–3 sentence AI-generated explanation citing specific human and dog reasons (e.g., "You both prioritize outdoor weekends, and both dogs are high-energy medium breeds that would love the same parks").
+#### Must-have (this weekend)
 
-**US-4 — Confirm a match**
-> As a single dog owner, I want to like a candidate and see a match confirmation, so that the demo has a satisfying payoff.
-- *Given* a candidate, *when* I click Like, *then* I see a match screen with the combined score, the human/dog breakdown, and the explanation.
+**US-1 — Represent both me and my dog** · *Slice A*
+
+> As a single dog owner, I want my profile to represent both me and my dog, so that potential matches understand who they'd really be dating — both of us.
+
+- Both my own identity and my dog's identity are captured as part of who I am.
+- My dog is treated as a first-class part of my profile, not an optional add-on.
+- What I capture is available to the matching experience.
+
+**US-2 — Find genuinely compatible matches** · *Slice B*
+
+> As a single dog owner, I want to discover people whose compatibility reflects both human and dog fit, so that I don't pursue matches that would fall apart because our dogs don't work.
+
+- I'm shown potential matches ordered so the most compatible are easiest to find.
+- Compatibility visibly reflects both human fit and dog fit, not human fit alone.
+
+**US-3 — Understand why a match fits (the AI moment)** · *Slice B*
+
+> As a single dog owner, I want to understand why someone is a good match, so that I can trust the recommendation and decide with confidence.
+
+- For a given match, I'm given a clear, believable reason it was suggested.
+- The reason references what specifically makes us — and our dogs — compatible, so it feels personal rather than generic.
+
+**US-4 — Act on a match and feel progress** · *Slice C*
+
+> As a single dog owner, I want to express interest in a match and get a satisfying confirmation, so that I feel real momentum toward meeting.
+
+- I can signal interest in a match I like.
+- When there's mutual/positive interest, I get a confirmation that reinforces why we fit and feels like a rewarding moment.
+
+#### Should-have (fuller product / stretch)
+
+**US-5 — Keep my profile current**
+
+> As a single dog owner, I want to update my and my dog's details over time, so that my matches stay accurate as life changes.
+
+- I can revise what I've shared, and future matching reflects the changes.
+
+**US-6 — Express what I'm looking for**
+
+> As a single dog owner, I want to communicate my preferences and dealbreakers (about people *and* dogs), so that matches respect my constraints.
+
+- I can express what matters to me; matches that violate a stated dealbreaker aren't pushed on me.
+
+**US-7 — Skip matches that aren't right**
+
+> As a single dog owner, I want to pass on matches that don't fit, so that I only invest time in ones that do.
+
+- I can decline a suggestion, and it stops taking up my attention.
+
+**US-8 — Trust it's safe to meet**
+
+> As a single dog owner, I want to feel safe about meeting a stranger and their dog, so that I'm comfortable taking a match into the real world.
+
+- Before meeting, I have enough signal and support to feel the step is safe and in my control.
+
+#### Could-have (nice-to-have / future)
+
+**US-9 — Know my dog will get along too**
+
+> As a single dog owner, I want confidence that our dogs are socially compatible, so that a first meeting doesn't go badly because of the dogs.
+
+- I understand how well our dogs are likely to get along, not just the people.
+
+**US-10 — Connect once there's mutual interest**
+
+> As a single dog owner, I want to start a conversation after we both show interest, so that we can actually arrange to meet.
+
+- Once interest is mutual, I have a way to communicate and take the next step.
+
+**US-11 — Plan a dog-friendly first meeting**
+
+> As a single dog owner, I want help finding a place our dogs can join, so that the first date works for humans and dogs alike.
+
+- I'm supported in choosing a setting that suits both people and both dogs.
+
+**US-12 — Instantly get what's different here** · *Slice C (landing)*
+
+> As a prospective user, I want to quickly grasp what makes this app different from other dating apps, so that I decide it's worth trying.
+
+- Within moments I understand the core promise — that my dog's compatibility counts too — and how to start.
 
 ### 2.5 AI feature specification
 - **What the AI does:** given the current user's profile and a candidate profile, produce a structured result: `combinedScore (0–100)`, `humanScore`, `dogScore`, `reasons[]` (short chips), and `explanation` (1–3 sentences, warm, specific).
