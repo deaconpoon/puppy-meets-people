@@ -55,14 +55,16 @@ export default function LandingPage() {
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
           Dating apps optimize for human-to-human fit and ignore the family
-          member who's already on your couch. If their reactive husky and your
-          anxious senior beagle can't share a park, neither can you.
+          member who’s already on your couch. If their reactive husky and your
+          anxious senior beagle can’t share a park, neither can you.
         </p>
       </section>
 
       {/* How it works — 3 steps */}
       <section className="py-12">
-        <h2 className="mb-8 text-center text-2xl font-semibold">How it works</h2>
+        <h2 className="mb-8 text-center text-2xl font-semibold">
+          How it works
+        </h2>
         <div className="grid gap-6 sm:grid-cols-3">
           {STEPS.map((step) => (
             <Card key={step.title}>
@@ -81,7 +83,7 @@ export default function LandingPage() {
       {/* Differentiator + CTA */}
       <section className="py-16 text-center">
         <h2 className="text-3xl font-semibold">
-          Your dog isn't a profile photo. It's half the match.
+          Your dog isn’t a profile photo. It’s half the match.
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
           Every match comes with a combined human + dog compatibility score and

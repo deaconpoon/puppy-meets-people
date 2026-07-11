@@ -29,7 +29,11 @@ export const SEEDED_MATCHES: MatchResult[] = [
     combinedScore: 66,
     humanScore: 72,
     dogScore: 58,
-    reasons: ["Shared coffee ritual", "Homebody-adjacent balance", "Gentle size gap"],
+    reasons: [
+      "Shared coffee ritual",
+      "Homebody-adjacent balance",
+      "Gentle size gap",
+    ],
     explanation:
       "You and Daniel would bond fast over coffee, and his homemade-dinner energy is a cozy counterweight to your trail days. Mochi's mellow fetch sessions run slower than Biscuit's pace, but a goofy Corgi is a hard playmate to refuse.",
   },
@@ -38,7 +42,11 @@ export const SEEDED_MATCHES: MatchResult[] = [
     combinedScore: 83,
     humanScore: 84,
     dogScore: 82,
-    reasons: ["Live music + hiking overlap", "Big weekend energy", "Athletic dogs"],
+    reasons: [
+      "Live music + hiking overlap",
+      "Big weekend energy",
+      "Athletic dogs",
+    ],
     explanation:
       "Priya's sunrise-runs-and-shows lifestyle lines up almost beat-for-beat with your hiking and live music habits. Bolt is an athlete like Biscuit, and a Vizsla who trail-runs would keep an Aussie honest on any climb.",
   },
@@ -56,7 +64,11 @@ export const SEEDED_MATCHES: MatchResult[] = [
     combinedScore: 79,
     humanScore: 80,
     dogScore: 78,
-    reasons: ["Coffee + outdoors overlap", "Matched lifestyle energy", "Adventure-ready dogs"],
+    reasons: [
+      "Coffee + outdoors overlap",
+      "Matched lifestyle energy",
+      "Adventure-ready dogs",
+    ],
     explanation:
       "You and Jordan share the coffee-fueled outdoor gene, and van-camping weekends slot neatly next to your hiking habit. Scout the Heeler and Biscuit are both smart, driven herding types who'd thrive on the same campsite chaos.",
   },
@@ -65,7 +77,11 @@ export const SEEDED_MATCHES: MatchResult[] = [
     combinedScore: 67,
     humanScore: 70,
     dogScore: 62,
-    reasons: ["Hiking in common", "Trail day, pastry morning", "Easygoing Golden"],
+    reasons: [
+      "Hiking in common",
+      "Trail day, pastry morning",
+      "Easygoing Golden",
+    ],
     explanation:
       "Elena hikes too, and her yoga-and-baking rhythm would mellow your week in a good way. Pancake is friendlier than he is fast — he'd let Biscuit set the pace and love every minute.",
   },
@@ -74,7 +90,11 @@ export const SEEDED_MATCHES: MatchResult[] = [
     combinedScore: 72,
     humanScore: 74,
     dogScore: 70,
-    reasons: ["Live music buddies", "Big engine lifestyles", "High-energy large dogs"],
+    reasons: [
+      "Live music buddies",
+      "Big engine lifestyles",
+      "High-energy large dogs",
+    ],
     explanation:
       "You and Marcus would burn through a concert calendar together, and his cycling keeps pace with your energy. Ziggy the Dalmatian matches Biscuit's motor, though his run-with-bikes obsession is a different sport than your long hikes.",
   },
@@ -124,7 +144,11 @@ export const SEEDED_MATCHES: MatchResult[] = [
     combinedScore: 76,
     humanScore: 78,
     dogScore: 74,
-    reasons: ["Hiking + photography", "Weekend adventurers", "Water-loving Lab"],
+    reasons: [
+      "Hiking + photography",
+      "Weekend adventurers",
+      "Water-loving Lab",
+    ],
     explanation:
       "Harper packs the same weekend bag you do — trails, a kayak, and a camera. Sable's happy-go-lucky Lab energy runs just a notch below Biscuit's, and a swimming stop mid-hike sounds like both dogs' perfect day.",
   },

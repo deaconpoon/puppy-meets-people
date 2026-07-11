@@ -58,8 +58,7 @@ export const MatchScoreSchema = z.object({
 export type MatchScore = z.infer<typeof MatchScoreSchema>;
 
 /** Full MatchResult schema — mirrors the frozen MatchResult type exactly. */
-export const MatchResultSchema: z.ZodType<MatchResult> = MatchScoreSchema.extend(
-  {
+export const MatchResultSchema: z.ZodType<MatchResult> =
+  MatchScoreSchema.extend({
     candidateId: z.string().min(1),
-  },
-);
+  });

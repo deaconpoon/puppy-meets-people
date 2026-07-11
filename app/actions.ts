@@ -10,7 +10,7 @@
 // the UI.
 // ============================================================================
 
-import type { Profile, ScoredCandidate, ScoreMatch, ScoreAll } from "@/data/types";
+import type { ScoredCandidate, ScoreMatch, ScoreAll } from "@/data/types";
 import { scoreMatchAI } from "@/lib/ai";
 import { fallbackScore } from "@/lib/fallback-score";
 
@@ -22,7 +22,10 @@ export const scoreMatch: ScoreMatch = async (user, candidate) => {
   try {
     return await scoreMatchAI(user, candidate);
   } catch (error) {
-    console.error(`scoreMatch: AI call failed for ${candidate.id}, using fallback`, error);
+    console.error(
+      `scoreMatch: AI call failed for ${candidate.id}, using fallback`,
+      error,
+    );
     return fallbackScore(user, candidate);
   }
 };

@@ -78,7 +78,9 @@ export function MatchBreakdown({
             </Badge>
           ))}
         </div>
-        <p className="text-center text-sm leading-relaxed">{match.explanation}</p>
+        <p className="text-center text-sm leading-relaxed">
+          {match.explanation}
+        </p>
       </CardContent>
     </Card>
   );

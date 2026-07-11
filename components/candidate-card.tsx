@@ -37,7 +37,9 @@ export function CandidateCard({ candidate }: { candidate: ScoredCandidate }) {
           </p>
         </div>
         <div className="text-right">
-          <p className="text-3xl font-bold text-primary">{match.combinedScore}</p>
+          <p className="text-3xl font-bold text-primary">
+            {match.combinedScore}
+          </p>
           <p className="text-xs text-muted-foreground">match</p>
         </div>
       </CardHeader>
@@ -63,7 +65,8 @@ export function CandidateCard({ candidate }: { candidate: ScoredCandidate }) {
         {/* US-4 seam: liking opens the Slice C match confirmation */}
         <Button asChild className="w-full">
           <Link href={`/app/match/${candidate.id}`}>
-            <Heart className="size-4" aria-hidden /> Like {human.name} &amp; {dog.name}
+            <Heart className="size-4" aria-hidden /> Like {human.name} &amp;{" "}
+            {dog.name}
           </Link>
         </Button>
       </CardFooter>

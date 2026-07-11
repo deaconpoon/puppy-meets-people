@@ -22,7 +22,8 @@ export default function DiscoverPage() {
   // candidate missing a seed so the page can never render a hole.
   const scored: ScoredCandidate[] = CANDIDATES.map((candidate) => ({
     ...candidate,
-    match: getSeededMatch(candidate.id) ?? fallbackScore(CURRENT_USER, candidate),
+    match:
+      getSeededMatch(candidate.id) ?? fallbackScore(CURRENT_USER, candidate),
   })).sort((a, b) => b.match.combinedScore - a.match.combinedScore);
 
   return (

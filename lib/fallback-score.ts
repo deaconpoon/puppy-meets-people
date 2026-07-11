@@ -16,7 +16,10 @@ function energyFit(a: number, b: number): number {
 }
 
 /** Case-insensitive overlap between two tag lists → 0–100. */
-function overlapScore(a: string[], b: string[]): { score: number; shared: string[] } {
+function overlapScore(
+  a: string[],
+  b: string[],
+): { score: number; shared: string[] } {
   const setB = new Set(b.map((x) => x.trim().toLowerCase()));
   const shared = a.filter((x) => setB.has(x.trim().toLowerCase()));
   const denom = Math.max(1, Math.min(a.length, b.length));
@@ -26,14 +29,20 @@ function overlapScore(a: string[], b: string[]): { score: number; shared: string
 const SIZE_ORDER = { small: 0, medium: 1, large: 2 } as const;
 
 /** Same size 100, one step apart 70, small↔large 40. */
-function sizeFit(a: keyof typeof SIZE_ORDER, b: keyof typeof SIZE_ORDER): number {
+function sizeFit(
+  a: keyof typeof SIZE_ORDER,
+  b: keyof typeof SIZE_ORDER,
+): number {
   return 100 - Math.abs(SIZE_ORDER[a] - SIZE_ORDER[b]) * 30;
 }
 
 /** Loose word overlap between favorite activities, e.g. "long hikes" ~ "hikes". */
 function activityFit(a: string, b: string): boolean {
   const words = (s: string) =>
-    s.toLowerCase().split(/\W+/).filter((w) => w.length > 3);
+    s
+      .toLowerCase()
+      .split(/\W+/)
+      .filter((w) => w.length > 3);
   const setB = new Set(words(b));
   return words(a).some((w) => setB.has(w));
 }
@@ -44,12 +53,18 @@ function activityFit(a: string, b: string): boolean {
  */
 export function fallbackScore(user: Profile, candidate: Profile): MatchResult {
   const humanEnergy = energyFit(user.human.energy, candidate.human.energy);
-  const interests = overlapScore(user.human.interests, candidate.human.interests);
+  const interests = overlapScore(
+    user.human.interests,
+    candidate.human.interests,
+  );
   const humanScore = clamp(0.5 * humanEnergy + 0.5 * interests.score);
 
   const dogEnergy = energyFit(user.dog.energy, candidate.dog.energy);
   const dogSize = sizeFit(user.dog.size, candidate.dog.size);
-  const temperament = overlapScore(user.dog.temperament, candidate.dog.temperament);
+  const temperament = overlapScore(
+    user.dog.temperament,
+    candidate.dog.temperament,
+  );
   const sharedActivity = activityFit(
     user.dog.favoriteActivity,
     candidate.dog.favoriteActivity,
@@ -82,7 +97,9 @@ export function fallbackScore(user: Profile, candidate: Profile): MatchResult {
   }
   while (reasons.length < 2) {
     reasons.push(
-      reasons.length === 0 ? "Complementary lifestyles" : "Dogs could balance each other",
+      reasons.length === 0
+        ? "Complementary lifestyles"
+        : "Dogs could balance each other",
     );
   }
 
@@ -92,14 +109,18 @@ export function fallbackScore(user: Profile, candidate: Profile): MatchResult {
         ? `share a love of ${interests.shared.slice(0, 2).join(" and ")}`
         : "have complementary interests"
     }, and your lifestyle energies are ${
-      Math.abs(user.human.energy - candidate.human.energy) <= 1 ? "closely" : "loosely"
+      Math.abs(user.human.energy - candidate.human.energy) <= 1
+        ? "closely"
+        : "loosely"
     } matched. ` +
     `${user.dog.name} and ${candidate.dog.name} are ${
       user.dog.size === candidate.dog.size
         ? `both ${user.dog.size} dogs`
         : "different sizes but"
     } with ${
-      Math.abs(user.dog.energy - candidate.dog.energy) <= 1 ? "similar" : "contrasting"
+      Math.abs(user.dog.energy - candidate.dog.energy) <= 1
+        ? "similar"
+        : "contrasting"
     } energy — ${
       sharedActivity
         ? `and they both live for ${candidate.dog.favoriteActivity}.`

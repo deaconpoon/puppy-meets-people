@@ -44,8 +44,16 @@ export function ProfileForm() {
     // TODO (Slice A): build a full `Profile` and save it to shared state.
     const draft: Profile = {
       ...CURRENT_USER,
-      human: { ...CURRENT_USER.human, name: values.humanName, city: values.city },
-      dog: { ...CURRENT_USER.dog, name: values.dogName, breed: values.dogBreed },
+      human: {
+        ...CURRENT_USER.human,
+        name: values.humanName,
+        city: values.city,
+      },
+      dog: {
+        ...CURRENT_USER.dog,
+        name: values.dogName,
+        breed: values.dogBreed,
+      },
     };
     console.log("Profile draft (not yet persisted):", draft);
   }
@@ -57,7 +65,10 @@ export function ProfileForm() {
         <label className="block text-sm" htmlFor="humanName">
           Your name
         </label>
-        <Input id="humanName" {...form.register("humanName", { required: true })} />
+        <Input
+          id="humanName"
+          {...form.register("humanName", { required: true })}
+        />
         <label className="block text-sm" htmlFor="city">
           City
         </label>
@@ -72,7 +83,10 @@ export function ProfileForm() {
         <label className="block text-sm" htmlFor="dogBreed">
           Breed
         </label>
-        <Input id="dogBreed" {...form.register("dogBreed", { required: true })} />
+        <Input
+          id="dogBreed"
+          {...form.register("dogBreed", { required: true })}
+        />
       </fieldset>
       <Button type="submit">Save profile</Button>
     </form>
