@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { scoreDeterministic } from "@/lib/scoring";
+import { haversineKm, proximityFit } from "@/lib/scoring/dimensions";
 import { MatchResultSchema } from "@/data/schemas";
 import type { Profile } from "@/data/types";
 
@@ -123,5 +124,50 @@ describe("scoreDeterministic", () => {
     const r = scoreDeterministic(ava, ben);
     expect(r.explanation).toContain("Biscuit");
     expect(r.explanation).toContain("Mochi");
+  });
+
+  it("scores same-neighborhood higher on human fit than a distant city", () => {
+    const near = scoreDeterministic(ava, ben); // both Seattle, ~0.4km
+    const far = scoreDeterministic(ava, cleo); // Tacoma, ~45km
+    expect(near.humanScore).toBeGreaterThan(far.humanScore);
+  });
+
+  it("emits a proximity ✔ signal for very close matches", () => {
+    const r = scoreDeterministic(ava, ben);
+    expect(
+      r.signals.some((s) => s.facet === "human" && /apart/i.test(s.label)),
+    ).toBe(true);
+  });
+});
+
+describe("proximityFit", () => {
+  it("is ~0 km for identical coordinates and scores 100", () => {
+    const p = proximityFit(
+      { lat: 47.6, lng: -122.3 },
+      { lat: 47.6, lng: -122.3 },
+    );
+    expect(p.km).toBeCloseTo(0, 1);
+    expect(p.score).toBe(100);
+  });
+
+  it("decays with distance", () => {
+    const near = proximityFit(
+      { lat: 47.6, lng: -122.33 },
+      { lat: 47.61, lng: -122.33 },
+    );
+    const far = proximityFit(
+      { lat: 47.6, lng: -122.33 },
+      { lat: 47.25, lng: -122.44 },
+    );
+    expect(near.score).toBeGreaterThan(far.score);
+  });
+
+  it("computes a plausible haversine distance (Seattle→Tacoma ≈ 40–50 km)", () => {
+    const km = haversineKm(
+      { lat: 47.6062, lng: -122.3321 },
+      { lat: 47.2529, lng: -122.4443 },
+    );
+    expect(km).toBeGreaterThan(38);
+    expect(km).toBeLessThan(52);
   });
 });

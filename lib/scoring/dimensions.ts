@@ -58,6 +58,37 @@ export function activityFit(a: string, b: string): number {
   return words(a).some((w) => setB.has(w)) ? 100 : 40;
 }
 
+/** Great-circle distance between two lat/lng points, in kilometers. */
+export function haversineKm(
+  a: { lat: number; lng: number },
+  b: { lat: number; lng: number },
+): number {
+  const R = 6371;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const lat1 = toRad(a.lat);
+  const lat2 = toRad(b.lat);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/** Proximity fit: 100 when co-located, decaying ~3 pts/km. Also returns a
+ *  rough "minutes apart" for the signal label (city driving ≈ 0.5 km/min). */
+export function proximityFit(
+  a: { lat: number; lng: number },
+  b: { lat: number; lng: number },
+): { score: number; km: number; minutes: number } {
+  const km = haversineKm(a, b);
+  return {
+    score: clamp(100 - km * 3),
+    km,
+    minutes: Math.max(1, Math.round(km * 2)),
+  };
+}
+
 /** Score one dog pair on the four dog dimensions (weighted). */
 export function dogPairScore(a: Dog, b: Dog): number {
   return clamp(

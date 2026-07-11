@@ -5,7 +5,7 @@
 // in later tasks.
 
 import type { MatchResult, Profile } from "@/data/types";
-import { clamp, dogPairScore, interestFit } from "./dimensions";
+import { clamp, dogPairScore, interestFit, proximityFit } from "./dimensions";
 import { buildSignals, type DimensionInput } from "./signals";
 
 /** Mean of every (userDog × candidateDog) pair score. */
@@ -51,7 +51,8 @@ export function scoreDeterministic(
     user.human.interests,
     candidate.human.interests,
   );
-  const humanScore = clamp(interests.score);
+  const prox = proximityFit(user.human.location, candidate.human.location);
+  const humanScore = clamp(0.6 * interests.score + 0.4 * prox.score);
 
   const dogScore = dogFit(user.dogs, candidate.dogs);
   const combinedScore = clamp(0.6 * humanScore + 0.4 * dogScore);
@@ -65,6 +66,12 @@ export function scoreDeterministic(
           ? `Both love ${interests.shared[0]}`
           : "Shared interests",
       caution: "Different interests",
+    },
+    {
+      facet: "human",
+      score: prox.score,
+      positive: `Live about ${prox.minutes} min apart`,
+      caution: "You live far apart",
     },
     {
       facet: "dog",
