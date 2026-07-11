@@ -1,7 +1,7 @@
 // Pure, deterministic per-dimension scoring functions. No network, no
 // randomness. Each returns a 0–100 number (higher = more compatible).
 
-import type { Dog } from "@/data/types";
+import type { Dog, WalkTime } from "@/data/types";
 
 export const clamp = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
 
@@ -87,6 +87,17 @@ export function proximityFit(
     km,
     minutes: Math.max(1, Math.round(km * 2)),
   };
+}
+
+/** Owner walk-routine overlap → { score, shared }. */
+export function walkFit(
+  a: WalkTime[],
+  b: WalkTime[],
+): { score: number; shared: WalkTime[] } {
+  const setB = new Set(b);
+  const shared = a.filter((t) => setB.has(t));
+  const denom = Math.max(1, Math.min(a.length, b.length));
+  return { score: clamp((shared.length / denom) * 100), shared };
 }
 
 /** Score one dog pair on the four dog dimensions (weighted). */

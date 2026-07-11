@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { scoreDeterministic } from "@/lib/scoring";
-import { haversineKm, proximityFit } from "@/lib/scoring/dimensions";
+import { haversineKm, proximityFit, walkFit } from "@/lib/scoring/dimensions";
 import { MatchResultSchema } from "@/data/schemas";
 import type { Profile } from "@/data/types";
 
@@ -137,6 +137,28 @@ describe("scoreDeterministic", () => {
     expect(
       r.signals.some((s) => s.facet === "human" && /apart/i.test(s.label)),
     ).toBe(true);
+  });
+
+  it("surfaces a shared-walk-time ✔ signal when routines align", () => {
+    // ava walks morning+evening; ben walks morning
+    const r = scoreDeterministic(ava, ben);
+    expect(
+      r.signals.some((s) => s.facet === "human" && /walk/i.test(s.label)),
+    ).toBe(true);
+  });
+});
+
+describe("walkFit", () => {
+  it("scores full overlap high and no overlap low", () => {
+    expect(
+      walkFit(["morning", "evening"], ["morning", "evening"]).score,
+    ).toBeGreaterThan(walkFit(["morning"], ["night"]).score);
+  });
+
+  it("returns the shared slots", () => {
+    expect(
+      walkFit(["morning", "evening"], ["evening", "night"]).shared,
+    ).toEqual(["evening"]);
   });
 });
 
