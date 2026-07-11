@@ -5,17 +5,17 @@
 // in later tasks.
 
 import type { MatchResult, Profile } from "@/data/types";
-import {
-  clamp,
-  dogPairScore,
-  interestFit,
-} from "./dimensions";
+import { clamp, dogPairScore, interestFit } from "./dimensions";
 import { buildSignals, type DimensionInput } from "./signals";
 
 /** Mean of every (userDog × candidateDog) pair score. */
-export function dogFit(userDogs: Profile["dogs"], candDogs: Profile["dogs"]): number {
+export function dogFit(
+  userDogs: Profile["dogs"],
+  candDogs: Profile["dogs"],
+): number {
   const scores: number[] = [];
-  for (const a of userDogs) for (const b of candDogs) scores.push(dogPairScore(a, b));
+  for (const a of userDogs)
+    for (const b of candDogs) scores.push(dogPairScore(a, b));
   return clamp(scores.reduce((s, n) => s + n, 0) / scores.length);
 }
 
@@ -25,8 +25,12 @@ export function templateExplanation(
   candidate: Profile,
   signals: import("@/data/types").Signal[],
 ): string {
-  const positives = signals.filter((s) => s.kind === "positive").map((s) => s.label.toLowerCase());
-  const cautions = signals.filter((s) => s.kind === "caution").map((s) => s.label.toLowerCase());
+  const positives = signals
+    .filter((s) => s.kind === "positive")
+    .map((s) => s.label.toLowerCase());
+  const cautions = signals
+    .filter((s) => s.kind === "caution")
+    .map((s) => s.label.toLowerCase());
   const lead =
     positives.length > 0
       ? `You and ${candidate.human.name} click on ${positives.slice(0, 2).join(" and ")}`
@@ -39,8 +43,14 @@ export function templateExplanation(
   return `${lead}. ${dogLine}${tail}`;
 }
 
-export function scoreDeterministic(user: Profile, candidate: Profile): MatchResult {
-  const interests = interestFit(user.human.interests, candidate.human.interests);
+export function scoreDeterministic(
+  user: Profile,
+  candidate: Profile,
+): MatchResult {
+  const interests = interestFit(
+    user.human.interests,
+    candidate.human.interests,
+  );
   const humanScore = clamp(interests.score);
 
   const dogScore = dogFit(user.dogs, candidate.dogs);

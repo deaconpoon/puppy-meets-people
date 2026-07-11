@@ -6,37 +6,70 @@ import type { Profile } from "@/data/types";
 const ava: Profile = {
   id: "ava",
   human: {
-    name: "Ava", age: 29, city: "Seattle",
+    name: "Ava",
+    age: 29,
+    city: "Seattle",
     interests: ["hiking", "coffee", "photography"],
     lookingFor: "A trail buddy who loves dogs.",
     location: { lat: 47.6062, lng: -122.3321 },
     walkTimes: ["morning", "evening"],
   },
-  dogs: [{ name: "Biscuit", breed: "Border Collie", size: "medium", energy: 5, temperament: ["playful", "friendly"], favoriteActivity: "long hikes" }],
+  dogs: [
+    {
+      name: "Biscuit",
+      breed: "Border Collie",
+      size: "medium",
+      energy: 5,
+      temperament: ["playful", "friendly"],
+      favoriteActivity: "long hikes",
+    },
+  ],
 };
 
 const ben: Profile = {
   id: "ben",
   human: {
-    name: "Ben", age: 31, city: "Seattle",
+    name: "Ben",
+    age: 31,
+    city: "Seattle",
     interests: ["hiking", "board games"],
     lookingFor: "Explore the trails.",
     location: { lat: 47.6097, lng: -122.3331 },
     walkTimes: ["morning"],
   },
-  dogs: [{ name: "Mochi", breed: "Shiba Inu", size: "medium", energy: 4, temperament: ["independent", "playful"], favoriteActivity: "hikes in the forest" }],
+  dogs: [
+    {
+      name: "Mochi",
+      breed: "Shiba Inu",
+      size: "medium",
+      energy: 4,
+      temperament: ["independent", "playful"],
+      favoriteActivity: "hikes in the forest",
+    },
+  ],
 };
 
 const cleo: Profile = {
   id: "cleo",
   human: {
-    name: "Cleo", age: 35, city: "Tacoma",
+    name: "Cleo",
+    age: 35,
+    city: "Tacoma",
     interests: ["reading", "baking"],
     lookingFor: "Quiet nights in.",
     location: { lat: 47.2529, lng: -122.4443 },
     walkTimes: ["night"],
   },
-  dogs: [{ name: "Pudding", breed: "Great Dane", size: "large", energy: 1, temperament: ["calm"], favoriteActivity: "naps in the sun" }],
+  dogs: [
+    {
+      name: "Pudding",
+      breed: "Great Dane",
+      size: "large",
+      energy: 1,
+      temperament: ["calm"],
+      favoriteActivity: "naps in the sun",
+    },
+  ],
 };
 
 describe("scoreDeterministic", () => {
@@ -61,7 +94,9 @@ describe("scoreDeterministic", () => {
 
   it("weights combined score 60% human / 40% dog", () => {
     const r = scoreDeterministic(ava, ben);
-    expect(r.combinedScore).toBe(Math.round(0.6 * r.humanScore + 0.4 * r.dogScore));
+    expect(r.combinedScore).toBe(
+      Math.round(0.6 * r.humanScore + 0.4 * r.dogScore),
+    );
   });
 
   it("ranks a compatible pair above an incompatible one", () => {

@@ -55,7 +55,8 @@ export function MatchBreakdown({
       <CardHeader className="text-center">
         <p className="text-6xl font-bold text-primary">{match.combinedScore}</p>
         <CardTitle>
-          compatibility with {candidate.human.name} &amp; {candidate.dogs[0].name}
+          compatibility with {candidate.human.name} &amp;{" "}
+          {candidate.dogs[0].name}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">

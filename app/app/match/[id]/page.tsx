@@ -27,7 +27,8 @@ export default async function MatchPage({
   const candidate = getCandidateById(id);
   if (!candidate) notFound();
 
-  const match = getSeededMatch(id) ?? scoreDeterministic(CURRENT_USER, candidate);
+  const match =
+    getSeededMatch(id) ?? scoreDeterministic(CURRENT_USER, candidate);
 
   return (
     <div className="mx-auto max-w-xl px-4 py-10 text-center">

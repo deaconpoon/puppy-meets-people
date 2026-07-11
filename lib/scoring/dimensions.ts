@@ -17,7 +17,10 @@ export function overlap(
 }
 
 /** Human interest overlap. */
-export function interestFit(a: string[], b: string[]): { score: number; shared: string[] } {
+export function interestFit(
+  a: string[],
+  b: string[],
+): { score: number; shared: string[] } {
   return overlap(a, b);
 }
 
@@ -37,14 +40,20 @@ export function sizeFit(
 }
 
 /** Dog temperament overlap → { score, shared }. */
-export function temperamentFit(a: string[], b: string[]): { score: number; shared: string[] } {
+export function temperamentFit(
+  a: string[],
+  b: string[],
+): { score: number; shared: string[] } {
   return overlap(a, b);
 }
 
 /** Loose word overlap between favorite activities → 100 if any shared word, else 40. */
 export function activityFit(a: string, b: string): number {
   const words = (s: string) =>
-    s.toLowerCase().split(/\W+/).filter((w) => w.length > 3);
+    s
+      .toLowerCase()
+      .split(/\W+/)
+      .filter((w) => w.length > 3);
   const setB = new Set(words(b));
   return words(a).some((w) => setB.has(w)) ? 100 : 40;
 }

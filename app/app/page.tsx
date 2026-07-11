@@ -20,7 +20,9 @@ import type { ScoredCandidate } from "@/data/types";
 export default function DiscoverPage() {
   const scored: ScoredCandidate[] = CANDIDATES.map((candidate) => ({
     ...candidate,
-    match: getSeededMatch(candidate.id) ?? scoreDeterministic(CURRENT_USER, candidate),
+    match:
+      getSeededMatch(candidate.id) ??
+      scoreDeterministic(CURRENT_USER, candidate),
   })).sort((a, b) => b.match.combinedScore - a.match.combinedScore);
 
   return (
