@@ -160,6 +160,11 @@ describe("walkFit", () => {
       walkFit(["morning", "evening"], ["evening", "night"]).shared,
     ).toEqual(["evening"]);
   });
+
+  it("returns score 0 and no shared slots for disjoint or empty schedules", () => {
+    expect(walkFit(["morning"], ["night"]).score).toBe(0);
+    expect(walkFit([], ["morning"])).toEqual({ score: 0, shared: [] });
+  });
 });
 
 describe("proximityFit", () => {

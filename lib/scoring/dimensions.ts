@@ -94,10 +94,8 @@ export function walkFit(
   a: WalkTime[],
   b: WalkTime[],
 ): { score: number; shared: WalkTime[] } {
-  const setB = new Set(b);
-  const shared = a.filter((t) => setB.has(t));
-  const denom = Math.max(1, Math.min(a.length, b.length));
-  return { score: clamp((shared.length / denom) * 100), shared };
+  const { score, shared } = overlap(a, b);
+  return { score, shared: shared as WalkTime[] };
 }
 
 /** Score one dog pair on the four dog dimensions (weighted). */
