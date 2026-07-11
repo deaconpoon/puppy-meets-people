@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scoreDeterministic } from "@/lib/scoring";
+import { dogFit, scoreDeterministic } from "@/lib/scoring";
 import { haversineKm, proximityFit, walkFit } from "@/lib/scoring/dimensions";
 import { MatchResultSchema } from "@/data/schemas";
 import type { Profile } from "@/data/types";
@@ -73,6 +73,41 @@ const cleo: Profile = {
   ],
 };
 
+const twoDogs: Profile = {
+  ...ava,
+  id: "multi",
+  dogs: [
+    ava.dogs[0], // high-energy Border Collie
+    {
+      name: "Sleepy",
+      breed: "Basset Hound",
+      size: "large",
+      energy: 1,
+      temperament: ["lazy", "shy"],
+      favoriteActivity: "naps in the sun",
+    },
+  ],
+};
+
+describe("dogFit (conservative aggregation)", () => {
+  it("adding a clashing dog lowers (never raises) the dog score", () => {
+    const single = dogFit(ava.dogs, ben.dogs).score;
+    const withClash = dogFit(twoDogs.dogs, ben.dogs).score;
+    expect(withClash).toBeLessThanOrEqual(single);
+  });
+
+  it("returns the worst pair for caution labeling", () => {
+    const { worstPair } = dogFit(twoDogs.dogs, ben.dogs);
+    expect(worstPair.a.name).toBe("Sleepy"); // the mismatched dog is the worst pair
+  });
+
+  it("identifies the single pair as the worst pair for one dog each", () => {
+    const { score, worstPair } = dogFit(ava.dogs, ben.dogs);
+    expect(worstPair.a.name).toBe("Biscuit");
+    expect(score).toBeGreaterThan(0);
+  });
+});
+
 describe("scoreDeterministic", () => {
   it("returns the candidate's id, never the user's", () => {
     expect(scoreDeterministic(ava, ben).candidateId).toBe("ben");
@@ -144,6 +179,16 @@ describe("scoreDeterministic", () => {
     const r = scoreDeterministic(ava, ben);
     expect(
       r.signals.some((s) => s.facet === "human" && /walk/i.test(s.label)),
+    ).toBe(true);
+  });
+
+  it("surfaces a ⚠ caution naming the worst dog pair when dogs clash", () => {
+    const r = scoreDeterministic(twoDogs, ben);
+    expect(
+      r.signals.some(
+        (s) =>
+          s.facet === "dog" && s.kind === "caution" && /Sleepy/.test(s.label),
+      ),
     ).toBe(true);
   });
 });

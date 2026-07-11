@@ -1,10 +1,11 @@
 // The deterministic scoring engine — owns the score and signals. Pure fn of
 // two Profiles: no network, no randomness, identical with or without a key.
-// Baseline dimensions: human = interest overlap + walk-schedule overlap +
-// proximity; dog = mean over all dog pairs. Conservative dog aggregation is
-// added in a later task.
+// Dimensions: human = interest overlap + proximity + walk-schedule overlap
+// (weighted 40/30/30); dog = conservative worst-pair-weighted blend over all
+// (userDog × candidateDog) pairs (0.7*worstPair + 0.3*mean), so one clashing
+// dog can't be diluted away by other easy pairs.
 
-import type { MatchResult, Profile } from "@/data/types";
+import type { Dog, MatchResult, Profile } from "@/data/types";
 import {
   clamp,
   dogPairScore,
@@ -14,15 +15,21 @@ import {
 } from "./dimensions";
 import { buildSignals, type DimensionInput } from "./signals";
 
-/** Mean of every (userDog × candidateDog) pair score. */
+/** Conservative dog fit: 0.7*worstPair + 0.3*meanPair over all dog pairs. */
 export function dogFit(
-  userDogs: Profile["dogs"],
-  candDogs: Profile["dogs"],
-): number {
-  const scores: number[] = [];
+  userDogs: Dog[],
+  candDogs: Dog[],
+): { score: number; worstPair: { a: Dog; b: Dog; score: number } } {
+  const pairs: { a: Dog; b: Dog; score: number }[] = [];
   for (const a of userDogs)
-    for (const b of candDogs) scores.push(dogPairScore(a, b));
-  return clamp(scores.reduce((s, n) => s + n, 0) / scores.length);
+    for (const b of candDogs) pairs.push({ a, b, score: dogPairScore(a, b) });
+  const mean = pairs.reduce((s, p) => s + p.score, 0) / pairs.length;
+  const worstPair = pairs.reduce(
+    (w, p) => (p.score < w.score ? p : w),
+    pairs[0],
+  );
+  const score = clamp(0.7 * worstPair.score + 0.3 * mean);
+  return { score, worstPair };
 }
 
 /** A short, templated explanation built from the computed signals. */
@@ -63,7 +70,8 @@ export function scoreDeterministic(
     0.4 * interests.score + 0.3 * walk.score + 0.3 * prox.score,
   );
 
-  const dogScore = dogFit(user.dogs, candidate.dogs);
+  const dog = dogFit(user.dogs, candidate.dogs);
+  const dogScore = dog.score;
   const combinedScore = clamp(0.6 * humanScore + 0.4 * dogScore);
 
   const dims: DimensionInput[] = [
@@ -91,11 +99,15 @@ export function scoreDeterministic(
           : "Similar walk routine",
       caution: "Different walk schedules",
     },
+    // NOTE: this signal keys off the WORST pair's score, not the blended
+    // dogScore — the conservative blend can sit above the caution threshold
+    // even when a real clash exists, so the friction we want to surface is
+    // the worst pair itself.
     {
       facet: "dog",
-      score: dogScore,
-      positive: "Dogs are a good match",
-      caution: "Dogs may not mesh",
+      score: dog.worstPair.score,
+      positive: `${dog.worstPair.a.name} & ${dog.worstPair.b.name} click`,
+      caution: `${dog.worstPair.a.name} & ${dog.worstPair.b.name} may not mesh`,
     },
   ];
   const signals = buildSignals(dims);
