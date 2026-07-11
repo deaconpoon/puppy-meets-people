@@ -55,7 +55,7 @@ export function MatchBreakdown({
       <CardHeader className="text-center">
         <p className="text-6xl font-bold text-primary">{match.combinedScore}</p>
         <CardTitle>
-          compatibility with {candidate.human.name} &amp; {candidate.dog.name}
+          compatibility with {candidate.human.name} &amp; {candidate.dogs[0].name}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -66,15 +66,18 @@ export function MatchBreakdown({
             icon={<User className="size-4" aria-hidden />}
           />
           <ScoreBar
-            label={`Your dog + ${candidate.dog.name}`}
+            label={`Your dog + ${candidate.dogs[0].name}`}
             score={match.dogScore}
             icon={<PawPrint className="size-4" aria-hidden />}
           />
         </div>
         <div className="flex flex-wrap justify-center gap-1.5">
-          {match.reasons.map((reason) => (
-            <Badge key={reason} variant="secondary">
-              {reason}
+          {match.signals.map((signal) => (
+            <Badge
+              key={signal.label}
+              variant={signal.kind === "caution" ? "outline" : "secondary"}
+            >
+              {signal.kind === "caution" ? "⚠" : "✔"} {signal.label}
             </Badge>
           ))}
         </div>

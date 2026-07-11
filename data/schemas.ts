@@ -1,13 +1,11 @@
 // ============================================================================
-// SHARED FOUNDATION (TRD §8.0) — Zod schemas mirroring data/types.ts 1:1.
-// data/types.ts is the FROZEN contract; these schemas must never drift from it.
-// The `satisfies`/type annotations below make the compiler enforce the mirror:
-// if a schema stops matching its type, `bun run build` fails here — fix the
-// schema, never types.ts.
+// Zod schemas mirroring data/types.ts 1:1. Keep in sync (AGENTS.md §2).
+// The LLM now returns ONLY the explanation; scores + signals are computed,
+// so MatchScoreSchema shrinks to { explanation }.
 // ============================================================================
 
 import { z } from "zod";
-import type { Dog, Human, MatchResult, Profile } from "./types";
+import type { Dog, Human, MatchResult, Profile, Signal } from "./types";
 
 const energyLevel = z.union([
   z.literal(1),
@@ -30,35 +28,38 @@ export const HumanSchema: z.ZodType<Human> = z.object({
   name: z.string().min(1),
   age: z.number().int().min(18).max(120),
   city: z.string().min(1),
-  energy: energyLevel,
   interests: z.array(z.string()),
   lookingFor: z.string().min(1),
+  location: z.object({ lat: z.number(), lng: z.number() }),
+  walkTimes: z.array(z.enum(["morning", "afternoon", "evening", "night"])),
 });
 
 export const ProfileSchema: z.ZodType<Profile> = z.object({
   id: z.string().min(1),
   human: HumanSchema,
-  dog: DogSchema,
+  dogs: z.array(DogSchema).min(1),
   photoUrl: z.string().optional(),
 });
 
-/**
- * AI output schema (TRD §5.1). The model returns the scores/reasons/explanation;
- * `candidateId` is stamped on afterwards by scoreMatch, so it is NOT part of
- * what generateObject validates.
- */
+export const SignalSchema: z.ZodType<Signal> = z.object({
+  facet: z.enum(["human", "dog"]),
+  kind: z.enum(["positive", "caution"]),
+  label: z.string().min(1),
+});
+
+/** AI output schema: the model returns ONLY the explanation prose. */
 export const MatchScoreSchema = z.object({
-  combinedScore: z.number().min(0).max(100),
-  humanScore: z.number().min(0).max(100),
-  dogScore: z.number().min(0).max(100),
-  reasons: z.array(z.string()).min(2).max(4),
-  explanation: z.string(),
+  explanation: z.string().min(1),
 });
 
 export type MatchScore = z.infer<typeof MatchScoreSchema>;
 
 /** Full MatchResult schema — mirrors the frozen MatchResult type exactly. */
-export const MatchResultSchema: z.ZodType<MatchResult> =
-  MatchScoreSchema.extend({
-    candidateId: z.string().min(1),
-  });
+export const MatchResultSchema: z.ZodType<MatchResult> = z.object({
+  candidateId: z.string().min(1),
+  combinedScore: z.number().min(0).max(100),
+  humanScore: z.number().min(0).max(100),
+  dogScore: z.number().min(0).max(100),
+  signals: z.array(SignalSchema).min(2).max(4),
+  explanation: z.string().min(1),
+});

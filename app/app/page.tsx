@@ -14,16 +14,13 @@
 import { CandidateCard } from "@/components/candidate-card";
 import { CANDIDATES, CURRENT_USER } from "@/data/profiles";
 import { getSeededMatch } from "@/data/seeded-matches";
-import { fallbackScore } from "@/lib/fallback-score";
+import { scoreDeterministic } from "@/lib/scoring";
 import type { ScoredCandidate } from "@/data/types";
 
 export default function DiscoverPage() {
-  // Seeded results, ranked high → low (US-2). fallbackScore covers any
-  // candidate missing a seed so the page can never render a hole.
   const scored: ScoredCandidate[] = CANDIDATES.map((candidate) => ({
     ...candidate,
-    match:
-      getSeededMatch(candidate.id) ?? fallbackScore(CURRENT_USER, candidate),
+    match: getSeededMatch(candidate.id) ?? scoreDeterministic(CURRENT_USER, candidate),
   })).sort((a, b) => b.match.combinedScore - a.match.combinedScore);
 
   return (
@@ -31,7 +28,7 @@ export default function DiscoverPage() {
       <h1 className="text-3xl font-bold">Discover</h1>
       <p className="mt-1 text-muted-foreground">
         Ranked by combined fit for you, {CURRENT_USER.human.name} — and for{" "}
-        {CURRENT_USER.dog.name}.
+        {CURRENT_USER.dogs[0].name}.
       </p>
       <div className="mt-6 space-y-4">
         {scored.map((candidate) => (

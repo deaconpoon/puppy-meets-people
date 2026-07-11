@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { MatchBreakdown } from "@/components/match-breakdown";
 import { CURRENT_USER, getCandidateById } from "@/data/profiles";
 import { getSeededMatch } from "@/data/seeded-matches";
-import { fallbackScore } from "@/lib/fallback-score";
+import { scoreDeterministic } from "@/lib/scoring";
 
 export default async function MatchPage({
   params,
@@ -27,14 +27,14 @@ export default async function MatchPage({
   const candidate = getCandidateById(id);
   if (!candidate) notFound();
 
-  const match = getSeededMatch(id) ?? fallbackScore(CURRENT_USER, candidate);
+  const match = getSeededMatch(id) ?? scoreDeterministic(CURRENT_USER, candidate);
 
   return (
     <div className="mx-auto max-w-xl px-4 py-10 text-center">
       <h1 className="text-4xl font-bold text-primary">It&apos;s a match! 🐾</h1>
       <p className="mt-2 text-muted-foreground">
-        {CURRENT_USER.human.name} &amp; {CURRENT_USER.dog.name}, meet{" "}
-        {candidate.human.name} &amp; {candidate.dog.name}.
+        {CURRENT_USER.human.name} &amp; {CURRENT_USER.dogs[0].name}, meet{" "}
+        {candidate.human.name} &amp; {candidate.dogs[0].name}.
       </p>
       <div className="mt-6 text-left">
         <MatchBreakdown candidate={candidate} match={match} />

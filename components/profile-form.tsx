@@ -35,8 +35,8 @@ export function ProfileForm() {
     defaultValues: {
       humanName: CURRENT_USER.human.name,
       city: CURRENT_USER.human.city,
-      dogName: CURRENT_USER.dog.name,
-      dogBreed: CURRENT_USER.dog.breed,
+      dogName: CURRENT_USER.dogs[0].name,
+      dogBreed: CURRENT_USER.dogs[0].breed,
     },
   });
 
@@ -49,11 +49,13 @@ export function ProfileForm() {
         name: values.humanName,
         city: values.city,
       },
-      dog: {
-        ...CURRENT_USER.dog,
-        name: values.dogName,
-        breed: values.dogBreed,
-      },
+      dogs: [
+        {
+          ...CURRENT_USER.dogs[0],
+          name: values.dogName,
+          breed: values.dogBreed,
+        },
+      ],
     };
     console.log("Profile draft (not yet persisted):", draft);
   }

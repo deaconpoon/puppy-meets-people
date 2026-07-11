@@ -20,7 +20,8 @@ import {
 import type { ScoredCandidate } from "@/data/types";
 
 export function CandidateCard({ candidate }: { candidate: ScoredCandidate }) {
-  const { human, dog, match } = candidate;
+  const { human, dogs, match } = candidate;
+  const dog = dogs[0];
 
   return (
     <Card>
@@ -53,9 +54,12 @@ export function CandidateCard({ candidate }: { candidate: ScoredCandidate }) {
           </span>
         </div>
         <div className="flex flex-wrap gap-1.5">
-          {match.reasons.map((reason) => (
-            <Badge key={reason} variant="secondary">
-              {reason}
+          {match.signals.map((signal) => (
+            <Badge
+              key={signal.label}
+              variant={signal.kind === "caution" ? "outline" : "secondary"}
+            >
+              {signal.kind === "caution" ? "⚠" : "✔"} {signal.label}
             </Badge>
           ))}
         </div>
