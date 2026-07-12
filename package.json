@@ -12,7 +12,7 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "bun run lint && bun run typecheck && bun run test && bun run build"
+    "verify": "bun run format:check && bun run lint && bun run typecheck && bun run test && bun run build"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.11",

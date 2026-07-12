@@ -18,7 +18,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Working agreements
 
-1. **Branch → PR → merge.** Never push to `main` directly. `bun run verify` (lint + typecheck + test + build) must be green before you open a PR — CI runs the same gates.
+1. **Branch → PR → merge.** Never push to `main` directly. `bun run verify` (format + lint + typecheck + test + build) must be green before you open a PR — CI runs the same gates.
 2. **Shared seams are team decisions.** `data/types.ts` and `data/schemas.ts` are used by every slice, and a test keeps them in sync. You _can_ change them — but update types, schemas, and tests together, and flag the change to the team (PR description + the team channel) so nobody builds against a stale shape.
 3. **Stay in the story you're working on.** Don't drive-by refactor another slice's files; if your work seems to need it, surface that instead of doing it.
 4. **The demo must never break.** The app currently works with no `OPENAI_API_KEY` (deterministic fallback + seeded data). Whatever you change, keep a no-secrets, no-network path that renders. CI builds without any keys to enforce this.
@@ -31,12 +31,27 @@ Requires Node ≥ 20.12 (`nvm use` picks up `.nvmrc` → Node 24) and Bun.
 ```bash
 bun install          # deps
 bun run dev          # dev server → http://localhost:3000
-bun run verify       # lint + typecheck + test + build (run before every PR)
+bun run verify       # format + lint + typecheck + test + build (run before every PR)
 bun run test:watch   # Vitest in watch mode
 bun run format       # Prettier (write)
 ```
 
-CI (GitHub Actions) runs lint, typecheck, test, and build on every PR — same as `bun run verify`. Deploys are automatic via Vercel Git integration: PRs get preview URLs, `main` goes to production.
+CI (GitHub Actions) runs format check, lint, typecheck, test, and build on every PR — same as `bun run verify`. Deploys are automatic via Vercel Git integration: PRs get preview URLs, `main` goes to production.
+
+## Tickets (Linear)
+
+Work is tracked in Linear — project **Puppy Meets People — Hackathon MVP**, issue prefix **PMP**. Address the team by id `82c07b16-b798-4e86-a451-3cb8b6821b02` (the display name gets renamed; the id doesn't). Issues PMP-10..21 map to user stories US-1..12; labels are `slice-A` / `slice-B` / `slice-C` / `process` / `design`. Statuses: Backlog → Todo → In Progress → In Review → Done.
+
+The conventions are deliberately light — the ticket follows the work, never the other way around:
+
+- **Starting something?** Make sure a ticket exists, is assigned to you, and is **In Progress**. If you discover new work mid-task, don't silently expand scope — create a ticket for it (clear title, a sentence or two of description, the right label, status Todo, unassigned) and stay in your story.
+- **Branch names**: use Linear's suggested branch name from the issue (e.g. `yourname/pmp-13-us-4-act-on-a-match`), so tickets and PRs link up.
+- **PRs**: put the ticket id in the title (`PMP-13: match confirmation moment`) and `Fixes PMP-13` in the description. Move the ticket to **In Review** and drop the PR URL on it.
+- **On merge**: the ticket ends in **Done**. If automation didn't do it, do it by hand (or ask your agent to).
+- **Ticket descriptions stay solution-agnostic** for story work — outcomes, not screens/fields/formats. Implementation detail belongs in the PR.
+- **No Linear access from your agent?** Don't block. Note the ticket id in the PR and describe what changed; anyone with access (or their agent) syncs the board.
+
+Claude Code users: `/ticket` creates or updates tickets with these conventions, `/pr` runs the whole verify → push → PR → update-ticket flow. Just say "track this in Linear" or "open a PR".
 
 ## Slices
 
@@ -57,3 +72,5 @@ A working end-to-end scaffold: `/` landing → `/app` discover → `/app/profile
 ## Project skills (Claude Code)
 
 - `/verify` — run the full quality gate and summarize failures.
+- `/ticket` — create/update a Linear ticket with the team's conventions.
+- `/pr` — verify → push → open PR from the template → move the Linear ticket to In Review.
