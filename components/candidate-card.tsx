@@ -1,12 +1,12 @@
 // ============================================================================
 // SLICE B (US-2 / US-3) — Candidate card for Discover.
 // Renders one ScoredCandidate: combined score + human/dog sub-scores (US-2),
-// reason chips + AI "why you matched" explanation (US-3), and a Like button
-// that hands the candidate to Slice C via /app/match/[id] (US-4 seam).
+// top signal chips + AI "why you matched" explanation (US-3), and a link to
+// the full breakdown at /app/candidate/[id]. Liking (US-4) is Slice C's flow.
 // ============================================================================
 
 import Link from "next/link";
-import { Heart, PawPrint, User } from "lucide-react";
+import { PawPrint, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -54,23 +54,26 @@ export function CandidateCard({ candidate }: { candidate: ScoredCandidate }) {
           </span>
         </div>
         <div className="flex flex-wrap gap-1.5">
-          {match.signals.map((signal) => (
+          {match.signals.slice(0, 3).map((signal) => (
             <Badge
               key={signal.label}
+              data-testid="signal-chip"
               variant={signal.kind === "caution" ? "outline" : "secondary"}
             >
-              {signal.kind === "caution" ? "⚠" : "✔"} {signal.label}
+              <span aria-hidden>{signal.kind === "caution" ? "⚠" : "✔"}</span>
+              <span className="sr-only">
+                {signal.kind === "caution" ? "Caution: " : "Match: "}
+              </span>{" "}
+              {signal.label}
             </Badge>
           ))}
         </div>
         <p className="text-sm">{match.explanation}</p>
       </CardContent>
       <CardFooter>
-        {/* US-4 seam: liking opens the Slice C match confirmation */}
         <Button asChild className="w-full">
-          <Link href={`/app/match/${candidate.id}`}>
-            <Heart className="size-4" aria-hidden /> Like {human.name} &amp;{" "}
-            {dog.name}
+          <Link href={`/app/candidate/${candidate.id}`}>
+            View why you match
           </Link>
         </Button>
       </CardFooter>
