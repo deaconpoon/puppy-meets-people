@@ -38,6 +38,21 @@ bun run format       # Prettier (write)
 
 CI (GitHub Actions) runs lint, typecheck, test, and build on every PR — same as `bun run verify`. Deploys are automatic via Vercel Git integration: PRs get preview URLs, `main` goes to production.
 
+## Tickets (Linear)
+
+Work is tracked in Linear — project **Puppy Meets People — Hackathon MVP**, issue prefix **PMP**. Address the team by id `82c07b16-b798-4e86-a451-3cb8b6821b02` (the display name gets renamed; the id doesn't). Issues PMP-10..21 map to user stories US-1..12; labels are `slice-A` / `slice-B` / `slice-C` / `process` / `design`. Statuses: Backlog → Todo → In Progress → In Review → Done.
+
+The conventions are deliberately light — the ticket follows the work, never the other way around:
+
+- **Starting something?** Make sure a ticket exists, is assigned to you, and is **In Progress**. If you discover new work mid-task, don't silently expand scope — create a ticket for it (clear title, a sentence or two of description, the right label, status Todo, unassigned) and stay in your story.
+- **Branch names**: use Linear's suggested branch name from the issue (e.g. `yourname/pmp-13-us-4-act-on-a-match`), so tickets and PRs link up.
+- **PRs**: put the ticket id in the title (`PMP-13: match confirmation moment`) and `Fixes PMP-13` in the description. Move the ticket to **In Review** and drop the PR URL on it.
+- **On merge**: the ticket ends in **Done**. If automation didn't do it, do it by hand (or ask your agent to).
+- **Ticket descriptions stay solution-agnostic** for story work — outcomes, not screens/fields/formats. Implementation detail belongs in the PR.
+- **No Linear access from your agent?** Don't block. Note the ticket id in the PR and describe what changed; anyone with access (or their agent) syncs the board.
+
+Claude Code users: `/ticket` creates or updates tickets with these conventions, `/pr` runs the whole verify → push → PR → update-ticket flow. Just say "track this in Linear" or "open a PR".
+
 ## Slices
 
 Work is split into three vertical slices; each user story in `docs/BRD-PRD.md` §2.4 is tagged with its slice (A — Profile, B — Discovery & AI, C — Match & Landing; C is Deacon's, A/B split between Nelson and Kelvin is TBD). The stories, not the current files, define each slice's scope — check the docs rather than assuming a file layout.
@@ -57,3 +72,5 @@ A working end-to-end scaffold: `/` landing → `/app` discover → `/app/profile
 ## Project skills (Claude Code)
 
 - `/verify` — run the full quality gate and summarize failures.
+- `/ticket` — create/update a Linear ticket with the team's conventions.
+- `/pr` — verify → push → open PR from the template → move the Linear ticket to In Review.

@@ -1,6 +1,6 @@
 ## What & why
 
-<!-- One or two sentences. Link the user story if there is one, e.g. "US-2". -->
+<!-- One or two sentences. Link the Linear ticket, e.g. "Fixes PMP-13" (US-4). -->
 
 ## Checklist
 
