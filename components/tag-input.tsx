@@ -29,7 +29,8 @@ export function TagInput({
   tone,
   placeholder,
   suggestions = [],
-}: TagInputProps) {
+  ref,
+}: TagInputProps & { ref?: React.Ref<HTMLInputElement> }) {
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -79,7 +80,14 @@ export function TagInput({
     >
       <div className="flex gap-2">
         <Input
-          ref={inputRef}
+          ref={(node) => {
+            inputRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) {
+              (ref as React.MutableRefObject<HTMLInputElement | null>).current =
+                node;
+            }
+          }}
           id={id}
           value={draft}
           placeholder={placeholder}

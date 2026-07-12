@@ -38,16 +38,16 @@ const energyLevel = z.union([
 ]);
 
 const ProfileFormSchema = z.object({
-  humanName: z.string().min(1, "Please tell us your name."),
-  city: z.string().min(1, "Which city are you in?"),
+  humanName: z.string().trim().min(1, "Please tell us your name."),
+  city: z.string().trim().min(1, "Which city are you in?"),
   humanEnergy: energyLevel,
   interests: z.array(z.string()).min(1, "Add at least one interest."),
-  dogName: z.string().min(1, "What's your dog's name?"),
-  breed: z.string().min(1, "What breed (or best guess)?"),
+  dogName: z.string().trim().min(1, "What's your dog's name?"),
+  breed: z.string().trim().min(1, "What breed (or best guess)?"),
   size: z.enum(["small", "medium", "large"]),
   dogEnergy: energyLevel,
   temperament: z.array(z.string()).min(1, "Add at least one trait."),
-  favoriteActivity: z.string().min(1, "What does your dog love doing?"),
+  favoriteActivity: z.string().trim().min(1, "What does your dog love doing?"),
 });
 
 type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
@@ -119,7 +119,11 @@ function Field({
       </label>
       {children}
       {error && (
-        <p className="text-sm text-coral-800" role="alert">
+        <p
+          className="text-sm text-coral-800"
+          id={`${htmlFor}-error`}
+          role="alert"
+        >
           {error}
         </p>
       )}
@@ -140,8 +144,7 @@ export function ProfileForm() {
   // mismatch between the server-rendered seed and a stored profile.
   useEffect(() => {
     form.reset(toFormValues(getCurrentUser()));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [form]);
 
   function onSubmit(values: ProfileFormValues) {
     // Carry forward what Phase 1 doesn't ask (age, lookingFor) so the saved
@@ -173,7 +176,7 @@ export function ProfileForm() {
   if (saved) {
     return (
       <Card>
-        <CardContent className="space-y-4 text-center">
+        <CardContent role="status" className="space-y-4 text-center">
           <p className="font-display text-2xl">Profile saved! 🐾</p>
           <p className="text-muted-foreground">
             You and {form.getValues("dogName")} are ready to meet your matches.
@@ -205,11 +208,21 @@ export function ProfileForm() {
           htmlFor="humanName"
           error={errors.humanName?.message}
         >
-          <Input id="humanName" {...form.register("humanName")} />
+          <Input
+            id="humanName"
+            aria-invalid={errors.humanName ? true : undefined}
+            aria-describedby={errors.humanName ? "humanName-error" : undefined}
+            {...form.register("humanName")}
+          />
         </Field>
 
         <Field label="City" htmlFor="city" error={errors.city?.message}>
-          <Input id="city" {...form.register("city")} />
+          <Input
+            id="city"
+            aria-invalid={errors.city ? true : undefined}
+            aria-describedby={errors.city ? "city-error" : undefined}
+            {...form.register("city")}
+          />
         </Field>
 
         <Controller
@@ -246,6 +259,7 @@ export function ProfileForm() {
               <TagInput
                 id="interests"
                 tone="coral"
+                ref={field.ref}
                 value={field.value}
                 onChange={field.onChange}
                 placeholder="e.g. hiking — press Enter to add"
@@ -264,11 +278,21 @@ export function ProfileForm() {
           htmlFor="dogName"
           error={errors.dogName?.message}
         >
-          <Input id="dogName" {...form.register("dogName")} />
+          <Input
+            id="dogName"
+            aria-invalid={errors.dogName ? true : undefined}
+            aria-describedby={errors.dogName ? "dogName-error" : undefined}
+            {...form.register("dogName")}
+          />
         </Field>
 
         <Field label="Breed" htmlFor="breed" error={errors.breed?.message}>
-          <Input id="breed" {...form.register("breed")} />
+          <Input
+            id="breed"
+            aria-invalid={errors.breed ? true : undefined}
+            aria-describedby={errors.breed ? "breed-error" : undefined}
+            {...form.register("breed")}
+          />
         </Field>
 
         <Controller
@@ -324,6 +348,7 @@ export function ProfileForm() {
               <TagInput
                 id="temperament"
                 tone="honey"
+                ref={field.ref}
                 value={field.value}
                 onChange={field.onChange}
                 placeholder="e.g. friendly — press Enter to add"
@@ -341,6 +366,10 @@ export function ProfileForm() {
           <Input
             id="favoriteActivity"
             placeholder="e.g. fetch at the park"
+            aria-invalid={errors.favoriteActivity ? true : undefined}
+            aria-describedby={
+              errors.favoriteActivity ? "favoriteActivity-error" : undefined
+            }
             {...form.register("favoriteActivity")}
           />
         </Field>
