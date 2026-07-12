@@ -40,10 +40,10 @@ export function templateExplanation(
 ): string {
   const positives = signals
     .filter((s) => s.kind === "positive")
-    .map((s) => s.label.toLowerCase());
+    .map((s) => s.label);
   const cautions = signals
     .filter((s) => s.kind === "caution")
-    .map((s) => s.label.toLowerCase());
+    .map((s) => s.label);
   const lead =
     positives.length > 0
       ? `You and ${candidate.human.name} click on ${positives.slice(0, 2).join(" and ")}`
