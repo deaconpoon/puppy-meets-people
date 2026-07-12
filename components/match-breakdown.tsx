@@ -72,16 +72,32 @@ export function MatchBreakdown({
             icon={<PawPrint className="size-4" aria-hidden />}
           />
         </div>
-        <div className="flex flex-wrap justify-center gap-1.5">
-          {match.signals.map((signal) => (
-            <Badge
-              key={signal.label}
-              variant={signal.kind === "caution" ? "outline" : "secondary"}
-            >
-              {signal.kind === "caution" ? "⚠" : "✔"} {signal.label}
-            </Badge>
-          ))}
-        </div>
+        {(["human", "dog"] as const).map((facet) => {
+          const group = match.signals.filter((s) => s.facet === facet);
+          if (group.length === 0) return null;
+          return (
+            <div key={facet}>
+              <p className="mb-1.5 text-xs font-semibold uppercase text-muted-foreground">
+                {facet === "human" ? "You two" : "Your dogs"}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {group.map((signal) => (
+                  <Badge
+                    key={signal.label}
+                    variant={
+                      signal.kind === "caution" ? "outline" : "secondary"
+                    }
+                  >
+                    <span aria-hidden>
+                      {signal.kind === "caution" ? "⚠" : "✔"}
+                    </span>{" "}
+                    {signal.label}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          );
+        })}
         <p className="text-center text-sm leading-relaxed">
           {match.explanation}
         </p>
