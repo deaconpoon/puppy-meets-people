@@ -8,12 +8,7 @@
 import type { Metadata } from "next";
 import { Heart, PawPrint, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GradientCard } from "@/components/patterns/gradient-card";
 import { PageShell } from "@/components/patterns/page-shell";
 import { TraitChip } from "@/components/patterns/trait-chip";

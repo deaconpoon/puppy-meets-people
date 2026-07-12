@@ -20,7 +20,7 @@ Create or update a Linear issue the team way. Full conventions live in `AGENTS.m
 2. Create with: team id above, the project, exactly one label, and:
    - **Discovered-mid-task work**: status Todo, unassigned, priority Medium — someone grabs it later.
    - **Work the user is about to start**: status In Progress, assignee `me`.
-3. Title: outcome-focused, no implementation detail. Description: 1–3 sentences of *what and why*. For user-story-adjacent work keep it solution-agnostic — outcomes, not screens/fields/formats (see AGENTS.md: the scaffold is not direction).
+3. Title: outcome-focused, no implementation detail. Description: 1–3 sentences of _what and why_. For user-story-adjacent work keep it solution-agnostic — outcomes, not screens/fields/formats (see AGENTS.md: the scaffold is not direction).
 4. Report back the identifier, URL, and Linear's suggested `gitBranchName` (the user needs it for their branch).
 
 ## Updating

@@ -8,12 +8,7 @@
 import Link from "next/link";
 import { Heart, PawPrint, Sparkles, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageShell } from "@/components/patterns/page-shell";
 
 const STEPS = [
@@ -62,8 +57,8 @@ export default function LandingPage() {
             <span className="text-coral-600">your dog swipes too</span>.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-            We match on human compatibility <em>and</em> dog compatibility —
-            and tell you exactly why you matched.
+            We match on human compatibility <em>and</em> dog compatibility — and
+            tell you exactly why you matched.
           </p>
           <Button asChild size="lg" className="mt-8 rounded-full">
             <Link href="/app">Try the demo</Link>
@@ -82,8 +77,8 @@ export default function LandingPage() {
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
             Dating apps optimize for human-to-human fit and ignore the family
-            member who’s already on your couch. If their reactive husky and
-            your anxious senior beagle can’t share a park, neither can you.
+            member who’s already on your couch. If their reactive husky and your
+            anxious senior beagle can’t share a park, neither can you.
           </p>
         </section>
 
@@ -135,14 +130,20 @@ export default function LandingPage() {
               aria-label="Example compatibility score"
             >
               <span className="inline-flex items-center gap-1.5">
-                <span aria-hidden className="size-2.5 rounded-full bg-coral-500" />
+                <span
+                  aria-hidden
+                  className="size-2.5 rounded-full bg-coral-500"
+                />
                 You two · 84
               </span>
               <span aria-hidden className="text-border">
                 |
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <span aria-hidden className="size-2.5 rounded-full bg-honey-500" />
+                <span
+                  aria-hidden
+                  className="size-2.5 rounded-full bg-honey-500"
+                />
                 Your dogs · 91
               </span>
               <span aria-hidden className="text-border">

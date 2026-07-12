@@ -18,7 +18,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Working agreements
 
-1. **Branch → PR → merge.** Never push to `main` directly. `bun run verify` (lint + typecheck + test + build) must be green before you open a PR — CI runs the same gates.
+1. **Branch → PR → merge.** Never push to `main` directly. `bun run verify` (format + lint + typecheck + test + build) must be green before you open a PR — CI runs the same gates.
 2. **Shared seams are team decisions.** `data/types.ts` and `data/schemas.ts` are used by every slice, and a test keeps them in sync. You _can_ change them — but update types, schemas, and tests together, and flag the change to the team (PR description + the team channel) so nobody builds against a stale shape.
 3. **Stay in the story you're working on.** Don't drive-by refactor another slice's files; if your work seems to need it, surface that instead of doing it.
 4. **The demo must never break.** The app currently works with no `OPENAI_API_KEY` (deterministic fallback + seeded data). Whatever you change, keep a no-secrets, no-network path that renders. CI builds without any keys to enforce this.
@@ -31,12 +31,12 @@ Requires Node ≥ 20.12 (`nvm use` picks up `.nvmrc` → Node 24) and Bun.
 ```bash
 bun install          # deps
 bun run dev          # dev server → http://localhost:3000
-bun run verify       # lint + typecheck + test + build (run before every PR)
+bun run verify       # format + lint + typecheck + test + build (run before every PR)
 bun run test:watch   # Vitest in watch mode
 bun run format       # Prettier (write)
 ```
 
-CI (GitHub Actions) runs lint, typecheck, test, and build on every PR — same as `bun run verify`. Deploys are automatic via Vercel Git integration: PRs get preview URLs, `main` goes to production.
+CI (GitHub Actions) runs format check, lint, typecheck, test, and build on every PR — same as `bun run verify`. Deploys are automatic via Vercel Git integration: PRs get preview URLs, `main` goes to production.
 
 ## Tickets (Linear)
 

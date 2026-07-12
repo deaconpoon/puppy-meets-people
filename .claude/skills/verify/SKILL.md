@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Run the full quality gate (lint, typecheck, test, build) and summarize the results. Use before opening a PR, after finishing a feature, or when the user asks "does everything pass?".
+description: Run the full quality gate (format check, lint, typecheck, test, build) and summarize the results. Use before opening a PR, after finishing a feature, or when the user asks "does everything pass?".
 ---
 
 # Verify
@@ -11,6 +11,7 @@ Run the repo's full quality gate and report results clearly.
 
 1. Ensure Node ≥ 20.12 is active (Vitest 4 needs it). If `node -v` shows < 20.12, prefix commands with the nvm Node 24 bin, e.g. `export PATH="$HOME/.nvm/versions/node/v24.15.0/bin:$PATH"` or run `nvm use` (reads `.nvmrc`).
 2. Run each gate separately so failures are attributable:
+   - `bun run format:check` (fix with `bun run format`)
    - `bun run lint`
    - `bun run typecheck`
    - `bun run test`

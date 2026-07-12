@@ -55,7 +55,10 @@ export default function RootLayout({
               Puppy Meets People
             </Link>
             <div className="flex items-center gap-5 text-sm font-semibold text-muted-foreground">
-              <Link href="/app" className="transition-colors hover:text-primary">
+              <Link
+                href="/app"
+                className="transition-colors hover:text-primary"
+              >
                 Discover
               </Link>
               <Link
