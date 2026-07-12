@@ -1,22 +1,24 @@
 // ============================================================================
-// SLICE A (US-1) — Profile page (/app/profile). STUB — owner: Person A.
-// Human + dog profile form; the saved Profile is the seam consumed by
-// Slice B's Discover ranking. See components/profile-form.tsx for the
-// Slice A TODO list (full field set, Zod validation, shared state, preview).
+// SLICE A (US-1) — Profile page (/app/profile). Owner: Kelvin (PMP-10).
+// Human + dog profile form; the saved Profile persists via lib/current-user.ts
+// (the Slice A → B seam consumed by Discover's re-scoring).
 // ============================================================================
 
+import { PageShell } from "@/components/patterns/page-shell";
 import { ProfileForm } from "@/components/profile-form";
 
 export default function ProfilePage() {
   return (
-    <div className="mx-auto max-w-xl px-4 py-10">
-      <h1 className="text-3xl font-bold">Your profile</h1>
-      <p className="mt-1 text-muted-foreground">
-        Tell us about you and your dog — matches consider both of you.
-      </p>
-      <div className="mt-6">
-        <ProfileForm />
+    <PageShell className="py-10">
+      <div className="mx-auto max-w-xl">
+        <h1 className="text-3xl font-bold">Your profile</h1>
+        <p className="mt-1 text-muted-foreground">
+          Tell us about you and your dog — matches consider both of you.
+        </p>
+        <div className="mt-6">
+          <ProfileForm />
+        </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
