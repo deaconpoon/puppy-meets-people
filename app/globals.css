@@ -4,12 +4,51 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================================
+   Design tokens — see docs/DESIGN.md (TES-27).
+   Owned by the design track; changes route through design review.
+   Light mode only by team decision — the .dark block below is inherited
+   shadcn scaffolding and intentionally unused.
+   ============================================================================ */
+
+@theme {
+  /* Brand hues — coral (primary/CTA), honey (dog/celebration), teal (sparse accent) */
+  --color-coral-50: #fff0ee;
+  --color-coral-100: #ffe0dc;
+  --color-coral-300: #ffa89f;
+  --color-coral-400: #ff8a7e;
+  --color-coral-500: #ff6b5e;
+  --color-coral-600: #e85546;
+  --color-coral-700: #c9402f;
+  --color-coral-800: #a93120;
+  --color-honey-50: #fff6e8;
+  --color-honey-100: #ffecd0;
+  --color-honey-300: #ffd189;
+  --color-honey-400: #ffc367;
+  --color-honey-500: #ffb648;
+  --color-honey-600: #e89a25;
+  --color-honey-700: #b06f0e;
+  --color-honey-800: #8a560a;
+  --color-teal-50: #e9f9f7;
+  --color-teal-100: #d0f3ef;
+  --color-teal-300: #8fe0d8;
+  --color-teal-400: #5cd2c7;
+  --color-teal-500: #2ec4b6;
+  --color-teal-600: #21a396;
+  --color-teal-700: #147c72;
+  --color-teal-800: #0f6459;
+  /* Warm neutrals */
+  --color-cream: #fff9f2;
+  --color-ink: #3d3733;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-figtree);
+  --font-display: var(--font-baloo);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-baloo);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,40 +87,42 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Warm, friendly palette — cream background, terracotta primary (TRD §8.0 design system) */
+/* Semantic (shadcn) tokens mapped onto the brand palette.
+   Contrast-checked pairs — keep ≥ 4.5:1 (see docs/DESIGN.md):
+   primary #C9402F on white 4.93 · foreground on cream 11.2 · muted-fg 4.57 */
 :root {
-  --background: oklch(0.988 0.012 85);
-  --foreground: oklch(0.28 0.03 50);
-  --card: oklch(1 0.005 90);
-  --card-foreground: oklch(0.28 0.03 50);
-  --popover: oklch(1 0.005 90);
-  --popover-foreground: oklch(0.28 0.03 50);
-  --primary: oklch(0.62 0.16 40);
-  --primary-foreground: oklch(0.99 0.01 85);
-  --secondary: oklch(0.95 0.03 80);
-  --secondary-foreground: oklch(0.35 0.05 45);
-  --muted: oklch(0.955 0.02 85);
-  --muted-foreground: oklch(0.52 0.03 55);
-  --accent: oklch(0.93 0.05 70);
-  --accent-foreground: oklch(0.32 0.06 45);
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+  --card: #ffffff;
+  --card-foreground: var(--color-ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-coral-700);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-honey-100);
+  --secondary-foreground: var(--color-honey-800);
+  --muted: #f7efe5;
+  --muted-foreground: #7a716a;
+  --accent: var(--color-honey-50);
+  --accent-foreground: var(--color-honey-800);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.02 80);
-  --input: oklch(0.9 0.02 80);
-  --ring: oklch(0.62 0.16 40);
-  --chart-1: oklch(0.62 0.16 40);
-  --chart-2: oklch(0.68 0.12 65);
-  --chart-3: oklch(0.55 0.1 140);
-  --chart-4: oklch(0.7 0.14 25);
-  --chart-5: oklch(0.6 0.08 85);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: #f0e7dc;
+  --input: #eadfd2;
+  --ring: var(--color-coral-500);
+  --chart-1: var(--color-coral-500);
+  --chart-2: var(--color-honey-500);
+  --chart-3: var(--color-teal-500);
+  --chart-4: var(--color-coral-300);
+  --chart-5: var(--color-honey-600);
+  --radius: 1rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--color-ink);
+  --sidebar-primary: var(--color-coral-700);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--color-honey-50);
+  --sidebar-accent-foreground: var(--color-honey-800);
+  --sidebar-border: #f0e7dc;
+  --sidebar-ring: var(--color-coral-500);
 }
 
 .dark {
@@ -118,6 +159,29 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Named gradients — the only sanctioned gradients; don't invent new ones. */
+@utility gradient-sunrise {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-coral-500),
+    var(--color-honey-500)
+  );
+}
+@utility gradient-sky {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-teal-500),
+    var(--color-cream)
+  );
+}
+@utility gradient-blush {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-coral-50),
+    var(--color-cream)
+  );
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -127,5 +191,11 @@
   }
   html {
     @apply font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
   }
 }
